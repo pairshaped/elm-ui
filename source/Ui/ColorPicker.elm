@@ -122,12 +122,21 @@ handleMove x y model =
   let
     (colorPanel, effect) = ColorPanel.handleMove x y model.colorPanel
   in
-    ({ model | colorPanel = colorPanel }, Effects.map ColorPanel effect)
+    if model.colorPanel == colorPanel then
+      (model, Effects.map ColorPanel effect)
+    else
+      ({ model | colorPanel = colorPanel }, Effects.map ColorPanel effect)
 
 {-| Updates a color picker, stopping the drags if the mouse isnt pressed. -}
 handleClick : Bool-> Model -> Model
 handleClick pressed model =
-  { model | colorPanel = ColorPanel.handleClick pressed model.colorPanel }
+  let
+    colorPanel = ColorPanel.handleClick pressed model.colorPanel
+  in
+    if model.colorPanel == colorPanel then
+      model
+    else
+      { model | colorPanel = colorPanel }
 
 -- Render internal.
 render : Signal.Address Action -> Model -> Html.Html
