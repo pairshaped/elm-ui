@@ -1,13 +1,13 @@
 module Ui
   (icon, title, subTitle, panel, spacer, inputGroup, iconAttributes,
    stylesheetLink, tabIndex, fab, textBlock, open, redirect, alert,
-   enabledActions, breadcrumbs, scrolledPanel ) where
+   enabledActions, breadcrumbs, scrolledPanel, markdown ) where
 
 {-| UI Library for ELM!
 
 # Static Components
 @docs icon, title, subTitle, panel, spacer, stylesheetLink, inputGroup
-@docs fab, textBlock, breadcrumbs, scrolledPanel
+@docs fab, textBlock, breadcrumbs, scrolledPanel, markdown
 
 # Helper Functions
 @docs tabIndex, open, redirect, alert, enabledActions, iconAttributes
@@ -16,6 +16,8 @@ import Html.Attributes exposing (classList, tabindex, rel, href, class)
 import Html.Events exposing (onClick)
 import Html.Extra exposing (onLoad)
 import Html exposing (node, text)
+
+import Markdown
 
 import Native.Browser
 
@@ -135,3 +137,8 @@ scrolledPanel : List Html.Html -> Html.Html
 scrolledPanel contents =
   node "ui-scrolled-panel" []
     [ node "ui-scrolled-panel-wrapper" [] contents ]
+
+{-| Renders markdown text to html. -}
+markdown : String -> Html.Html
+markdown content =
+  node "ui-markdown" [] [ Markdown.toHtml content ]

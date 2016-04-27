@@ -21,6 +21,18 @@ ui-text {
   margin-bottom: 20px;
 }
 
+ui-markdown {
+  @extend ui-text;
+
+  ul {
+    padding-left: 25px;
+
+    li + li {
+      margin-top: 7px;
+    }
+  }
+}
+
 ui-scrolled-panel {
   max-height: inherit;
   position: relative;

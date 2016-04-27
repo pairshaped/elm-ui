@@ -1,5 +1,5 @@
 ui-header {
-  @include colors(desaturate($background, 0%));
+  @include colors(dampen-inverse(desaturate($background, 0%), 40%));
 
   border-bottom: $border;
   position: relative;
