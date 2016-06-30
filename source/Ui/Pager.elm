@@ -1,9 +1,9 @@
-module Ui.Pager exposing (Model, Msg, init, update, view, render, select)
+module Ui.Pager exposing (Model, Msg, init, update, subscribe, view, render, select)
 
 {-| Pager Component.
 
 # Model
-@docs Model, Msg, init, update
+@docs Model, Msg, init, update, subscribe
 
 # View
 @docs view, render
@@ -21,6 +21,8 @@ import Json.Decode as Json
 import Json.Encode as JE
 import List.Extra
 
+import Ui.Helpers.Emitter as Emitter
+
 {-| Representation of a pager:
   - **center** - Pages at the center
   - **left** - Pages at the left side
@@ -34,6 +36,7 @@ type alias Model =
   , height : String
   , width : String
   , active : Int
+  , uid : String
   }
 
 
@@ -50,7 +53,8 @@ type Msg
 -}
 init : Int -> Model
 init active =
-  { height = "100vh"
+  { uid = Native.Uid.uid ()
+  , height = "100vh"
   , width = "100vw"
   , active = active
   , center = []
@@ -58,18 +62,33 @@ init active =
   }
 
 
+{-| Subscribe for the changes of a pager.
+
+    ...
+    subscriptions =
+      \model ->
+        Ui.Pager.subscribe
+          PageChanged
+          model.pager
+    ...
+-}
+subscribe : (Int -> msg) -> Model -> Sub msg
+subscribe msg model =
+  Emitter.listenInt model.uid msg
+
+
 {-| Updates a pager.
 
     Ui.Pager.update msg pager
 -}
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
   case action of
     End page ->
-      { model | left = [] }
+      ({ model | left = [] }, Cmd.none)
 
     Active page ->
-      { model | center = [], active = page }
+      ({ model | center = [], active = page }, Emitter.sendInt model.uid page)
 
 {-| Lazily renders a pager.
 
