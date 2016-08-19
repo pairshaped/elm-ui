@@ -34,6 +34,9 @@ import Ui.Native.Uid as Uid
 import String
 import Task
 
+import Ui.Styles.Theme as Theme exposing (default)
+import Ui.Styles.Html exposing (styledNode)
+import Css
 
 {-| Representation of an input:
   - **placeholder** - The text to display when there is no value
@@ -105,6 +108,25 @@ view : Model -> Html.Html Msg
 view model =
   Html.Lazy.lazy render model
 
+styles =
+  { root = ([ Css.display Css.inlineBlock ], [])
+  , input =
+    ( [ Css.backgroundColor default.colors.input
+      , Css.fontFamily Css.inherit
+      , Css.fontSize Css.inherit
+      , Css.lineHeight (Css.px 16)
+      , Css.padding2 (Css.px 6) (Css.px 9)
+      , Css.height (Css.px 36)
+      , Css.width (Css.pct 100)
+      , Theme.base default
+      , Theme.border default
+      , Theme.focused default
+      ],
+      [ ("[readonly]", [Css.property "cursor" default.readonlyCursor])
+      , ("[disabled]", [Theme.disabled default])
+      ]
+    )
+  }
 
 {-| Renders an input.
 
@@ -112,15 +134,15 @@ view model =
 -}
 render : Model -> Html.Html Msg
 render model =
-  node
+  styledNode
     "ui-input"
-    [ classList
-        [ ( "disabled", model.disabled )
-        , ( "readonly", model.readonly )
-        ]
+    model.uid
+    [ readonly model.readonly
+    , disabled model.disabled
     ]
-    [ node
+    [ styledNode
         "input"
+        (model.uid ++ "-input")
         [ placeholder model.placeholder
         , attribute "id" model.uid
         , readonly model.readonly
@@ -131,7 +153,9 @@ render model =
         , onInput Input
         ]
         []
+        styles.input
     ]
+    styles.root
 
 
 {-| Sets the value of an input.

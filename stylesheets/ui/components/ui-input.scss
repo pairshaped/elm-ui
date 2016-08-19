@@ -1,40 +1,7 @@
-ui-input {
-  display: inline-block;
-
-  &.disabled input {
-    @extend %disabled;
-    @include colors($disabled);
-    border-color: $disabled;
-  }
-
-  input {
-    width: 100%;
-
-    &:focus {
-      @extend %focused;
-    }
-
-    &[readonly] {
-      cursor: $readonly-cursor;
-    }
-  }
-}
-
 input:not([type]),
 input[type=text],
 input[type=email],
 input[type=password] {
-  @extend %focused-idle;
-
-  @include colors($input);
-  @include border;
-
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 16px;
-  padding: 6px 9px;
-  height: 36px;
-
   &::-webkit-input-placeholder {
     line-height: 22px;
   }
