@@ -109,24 +109,26 @@ view model =
   Html.Lazy.lazy render model
 
 styles =
-  { root = ([ Css.display Css.inlineBlock ], [])
-  , input =
-    ( [ Css.backgroundColor default.colors.input
+  [ Css.display Css.inlineBlock
+  , Css.children
+    [ Css.selector "input"
+      [ Css.backgroundColor default.colors.input
       , Css.fontFamily Css.inherit
       , Css.fontSize Css.inherit
       , Css.lineHeight (Css.px 16)
       , Css.padding2 (Css.px 6) (Css.px 9)
-      , Css.height (Css.px 36)
+      , Css.height default.inputs.height
       , Css.width (Css.pct 100)
       , Theme.base default
       , Theme.border default
       , Theme.focused default
-      ],
-      [ ("[readonly]", [Css.property "cursor" default.readonlyCursor])
-      , ("[disabled]", [Theme.disabled default])
       ]
-    )
-  }
+    , Css.selector "input[readonly]"
+      [ Css.property "cursor" default.readonlyCursor ]
+    , Css.selector "input[disabled]"
+      [ Theme.disabled default ]
+    ]
+  ]
 
 {-| Renders an input.
 
@@ -140,9 +142,8 @@ render model =
     [ readonly model.readonly
     , disabled model.disabled
     ]
-    [ styledNode
+    [ node
         "input"
-        (model.uid ++ "-input")
         [ placeholder model.placeholder
         , attribute "id" model.uid
         , readonly model.readonly
@@ -153,9 +154,8 @@ render model =
         , onInput Input
         ]
         []
-        styles.input
     ]
-    styles.root
+    styles
 
 
 {-| Sets the value of an input.

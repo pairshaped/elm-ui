@@ -9,9 +9,9 @@ styledNode : String
      -> String
      -> List (Html.Attribute msg)
      -> List (Html.Html msg)
-     -> (List Mixin, List (String, List Mixin))
+     -> List Mixin
      -> Html.Html msg
-styledNode tag uid attributes content (mixins, subs) =
+styledNode tag uid attributes content mixins =
   let
     sel =
       "[css=\"" ++ uid ++ "\"]"
@@ -22,11 +22,11 @@ styledNode tag uid attributes content (mixins, subs) =
     baseSelector =
       Css.selector sel mixins
 
-    otherSelectors =
-      List.map (\(part, mixns) -> Css.selector (sel ++ part) mixns) subs
+    --otherSelectors =
+    --  List.map (\(part, mixns) -> Css.selector (sel ++ part) mixns) subs
 
     css =
-      Css.stylesheet (baseSelector :: otherSelectors)
+      Css.stylesheet [baseSelector]
       |> Css.compile
 
     style =

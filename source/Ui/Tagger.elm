@@ -19,6 +19,7 @@ import Html.Attributes exposing (classList)
 import Html.Events.Extra exposing (onKeys)
 import Html.Events exposing (onClick)
 import Html exposing (node, text)
+import Html.Keyed
 import Html.Lazy
 import Html.App
 
@@ -32,6 +33,9 @@ import Ui.Container
 import Ui.Input
 import Ui
 
+import Ui.Styles.Theme as Theme exposing (default)
+import Ui.Styles.Html exposing (styledNode)
+import Css
 
 {-| Represents a tag:
   - **label** - The label to display
@@ -131,6 +135,34 @@ view tags model =
   Html.Lazy.lazy2 render tags model
 
 
+styles =
+  [ Css.display Css.inlineBlock
+  , Css.children
+    [ Css.selector "ui-tagger-tags"
+      [ Css.display Css.block
+      , Css.margin2 Css.zero (Css.px -5)
+      , Css.children
+        [ Css.selector "ui-tagger-tag"
+          [ Css.borderRadius default.borderRadius
+          , Css.property "display" "inline-flex"
+          , Css.alignItems Css.center
+          , Css.lineHeight default.inputs.height
+          , Css.fontWeight (Css.int 600)
+          , Css.padding2 Css.zero (Css.px 10)
+          , Css.margin (Css.px 5)
+          , Css.children
+            [ Css.selector "ui-icon"
+              [ Css.verticalAlign Css.middle
+              , Css.marginLeft (Css.px 10)
+              , Css.fontSize (Css.px 22)
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+
 {-| Renders a tagger.
 
     Ui.Tagger.render [tag1, tag2] tagger
@@ -175,19 +207,21 @@ render tags model =
             ]
         ]
   in
-    node
+    styledNode
       "ui-tagger"
+      model.uid
       (classes :: actions)
       [ Ui.Container.row
           []
           [ Html.App.map Input (Ui.Input.view updatedInput)
           , Ui.IconButton.view Create button
           ]
-      , node
+      , Html.Keyed.node
           "ui-tagger-tags"
           []
           (List.map (renderTag model) tags)
       ]
+      styles
 
 
 {-| Sets the value of a taggers input.
@@ -201,7 +235,7 @@ setValue value model =
 
 {-| Renders a tag.
 -}
-renderTag : Model -> Tag -> Html.Html Msg
+renderTag : Model -> Tag -> (String, Html.Html Msg)
 renderTag model tag =
   let
     icon =
@@ -217,9 +251,9 @@ renderTag model tag =
             ++ (Ui.tabIndex model)
           )
   in
-    node
+    (tag.id, node
       "ui-tagger-tag"
       []
       [ text tag.label
       , icon
-      ]
+      ])

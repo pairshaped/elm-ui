@@ -11,6 +11,9 @@ default =
              , kind = Css.solid
              , color = Css.hex "#E2E2E2"
              }
+  , inputs =
+    { height = Css.px 36
+    }
   , colors =
     { input = Css.hex "#FDFDFD"
     , focus = Css.hex "#00C0FF"
