@@ -292,6 +292,7 @@ init =
             { side = "left"
             , text = "Disabled"
             , kind = "success"
+            , uid = "test2"
             , glyph = "paper-airplane"
             , size = "medium"
             , disabled = True
@@ -304,6 +305,7 @@ init =
             { text = "Disabled"
             , kind = "danger"
             , size = "medium"
+            , uid = "test"
             , disabled = True
             , readonly = False
             }
@@ -515,27 +517,37 @@ view model =
       model.app
       [ Ui.NotificationCenter.view Notis model.notifications
       , Ui.Modal.view Modal modalView model.modal
-      , Ui.Layout.centerDefault
-          [ Ui.Header.icon "grid" NoOp
-          , Ui.Header.title "Elm-UI Kitchen Sink" NoOp
+      , Ui.Layout.website
+          [ Ui.Header.icon
+            { glyph = "grid"
+            , action = Just NoOp
+            , size = 23
+            }
+          , Ui.Header.title
+            { text = "Elm-UI Kitchen Sink"
+            , action = Just NoOp
+            }
           , Ui.spacer
           , Ui.Header.iconItem
-              "Github"
-              (Open "https://github.com/gdotdesign/elm-ui")
-              "social-github"
-              "right"
+            { text = "Github"
+            , action = Just (Open "https://github.com/gdotdesign/elm-ui")
+            , glyph = "social-github"
+            , side = "right"
+            }
           , Ui.Header.separator
           , Ui.Header.iconItem
-              "Guide"
-              (Open "https://gdotdesign.gitbooks.io/elm-ui-guide/content/")
-              "bookmark"
-              "right"
+            { text = "Guide"
+            , action = Just (Open "https://gdotdesign.gitbooks.io/elm-ui-guide/content/")
+            , glyph = "bookmark"
+            , side = "right"
+            }
           , Ui.Header.separator
           , Ui.Header.iconItem
-              "Examples"
-              (Open "https://github.com/gdotdesign/elm-ui-examples")
-              "clipboard"
-              "right"
+            { text = "Examples"
+            , action = Just (Open "https://github.com/gdotdesign/elm-ui-examples")
+            , glyph = "clipboard"
+            , side = "right"
+            }
           ]
           [ node
               "kitchen-sink"

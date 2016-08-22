@@ -4,7 +4,8 @@ module Ui.Button exposing
   , secondaryBig, secondarySmall, secondary
   , warningBig, warningSmall, warning
   , successBig, successSmall, success
-  , dangerBig, dangerSmall, danger)
+  , dangerBig, dangerSmall, danger
+  , styles)
 
 {-| Basic button component that implements:
   - **5 different types** (primary, secondary, warning, danger, success)
@@ -26,7 +27,7 @@ module Ui.Button exposing
 @docs danger, dangerBig, dangerSmall
 
 # Functions
-@docs attributes
+@docs attributes, styles
 -}
 
 import Html.Attributes exposing (classList)
@@ -40,6 +41,8 @@ import Ui.Helpers.Ripple as Ripple
 import Css
 
 import Ui.Styles.Theme as Theme exposing (default)
+import Ui.Styles.Html exposing (styledNode)
+import Ui.Native.Uid as Uid
 import Ui.Styles.Functions
 import Ui
 
@@ -57,22 +60,26 @@ type alias Model =
   , kind : String
   , size : String
   , text : String
+  , uid : String
   }
 
-
+{-| Styles for a button
+-}
+styles : List Css.Mixin
 styles =
   [ Css.borderRadius default.borderRadius
-  , Css.position Css.relative
   , Theme.userSelect "none"
-  , Css.padding2 Css.zero (Css.em 1.25)
+  , Css.padding2 Css.zero (Css.px 20)
   , Css.fontWeight (Css.int 600)
-  , Css.overflow Css.hidden
   , Css.cursor Css.pointer
   , Css.height (Css.px 36)
   , Css.property "justify-content" "center"
   , Css.property "display" "inline-flex"
   , Css.alignItems Css.center
   , Css.textAlign Css.center
+  , Theme.ripple
+  , Css.focus
+    [ Css.property "outline" "none" ]
   ]
 
 
@@ -87,6 +94,7 @@ init disabled readonly text kind size =
   , text = text
   , kind = kind
   , size = size
+  , uid = Uid.uid ()
   }
 
 
@@ -103,11 +111,13 @@ view msg model =
 -}
 render : msg -> Model -> Html.Html msg
 render msg model =
-  node
+  styledNode
     "ui-button"
+    model.uid
     (attributes msg model)
     [ Ripple.view
     , node "span" [] [ text model.text ] ]
+    styles
 
 
 {-| Renders a **big primary** button with the given text.

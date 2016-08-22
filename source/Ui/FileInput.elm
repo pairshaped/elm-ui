@@ -24,6 +24,7 @@ import Html.Events exposing (on)
 import Html.Lazy
 
 import Ui.Native.FileManager as FileManager exposing (File)
+import Ui.Native.Uid as Uid
 import Ui.Button
 import Ui
 
@@ -39,6 +40,7 @@ type alias Model =
   , disabled : Bool
   , file : Maybe File
   , accept : String
+  , uid : String
   }
 
 
@@ -61,6 +63,7 @@ init accept =
   , disabled = False
   , accept = accept
   , file = Nothing
+  , uid = Uid.uid ()
   }
 
 
@@ -123,6 +126,7 @@ render model =
           NoOp
           { text = "Browse"
           , kind = "primary"
+          , uid = model.uid ++ "-button"
           , readonly = model.readonly
           , disabled = model.disabled
           , size = "medium"
@@ -165,6 +169,7 @@ renderDetails model =
         NoOp
         { text = "Browse"
         , kind = "primary"
+        , uid = model.uid ++ "-button"
         , readonly = model.readonly
         , disabled = model.disabled
         , size = "medium"

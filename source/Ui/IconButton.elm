@@ -25,10 +25,10 @@ module Ui.IconButton exposing
 import Html exposing (node, text)
 import Html.Lazy
 
-import Svg.Attributes exposing (cx, cy, r, viewBox)
-import Svg exposing (svg, circle)
-
+import Ui.Styles.Html exposing (styledNode)
 import Ui.Button exposing (attributes)
+import Ui.Helpers.Ripple as Ripple
+import Ui.Native.Uid as Uid
 import Ui
 
 
@@ -49,6 +49,7 @@ type alias Model =
   , kind : String
   , side : String
   , size : String
+  , uid : String
   }
 
 
@@ -65,6 +66,7 @@ init glyph text =
   , glyph = glyph
   , side = "left"
   , text = text
+  , uid = Uid.uid ()
   }
 
 
@@ -87,13 +89,12 @@ render msg model =
       else
         [ span, icon ]
   in
-    node
+    styledNode
       "ui-icon-button"
+      model.uid
       (attributes msg model)
-      ([ svg [ viewBox "0 0 100 100" ]
-         [ circle [cx "50", cy "50", r "50"] []
-         ]
-       ] ++ children)
+      ([ Ripple.view ] ++ children)
+      Ui.Button.styles
 
 
 {-| Lazily renders an icon button.
@@ -221,4 +222,5 @@ model text size kind glyph side =
   , size = size
   , side = side
   , text = text
+  , uid = Uid.uid ()
   }

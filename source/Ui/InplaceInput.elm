@@ -192,12 +192,21 @@ form model =
               Save
               { disabled = disabled
               , readonly = False
+              , uid = model.uid ++ "-save-button"
               , kind = "primary"
               , text = "Save"
               , size = "medium"
               }
           , Ui.spacer
-          , Ui.Button.secondary "Close" Close
+          , Ui.Button.view
+              Save
+              { disabled = False
+              , readonly = False
+              , uid = model.uid ++ "-close-button"
+              , kind = "secondary"
+              , text = "Close"
+              , size = "medium"
+              }
           ]
       ]
 

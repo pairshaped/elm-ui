@@ -13,6 +13,7 @@ import Html.Events.Extra exposing (onKeys)
 import Html exposing (node)
 import Html.Lazy
 
+import Ui.Native.Uid as Uid
 import Ui.Button
 
 
@@ -29,6 +30,7 @@ type alias Model msg =
   , readonly : Bool
   , kind : String
   , size : String
+  , uid : String
   }
 
 
@@ -45,6 +47,7 @@ init items =
   , kind = "primary"
   , size = "medium"
   , items = items
+  , uid = Uid.uid ()
   }
 
 
@@ -67,14 +70,14 @@ render model =
   node
     "ui-button-group"
     []
-    (List.map (renderButton model) model.items)
+    (List.indexedMap (renderButton model) model.items)
 
 
 
 {-| Renders a button for the button group.
 -}
-renderButton : Model msg -> ( String, msg ) -> Html.Html msg
-renderButton model ( label, action ) =
+renderButton : Model msg -> Int -> ( String, msg ) -> Html.Html msg
+renderButton model index ( label, action ) =
   Ui.Button.view
     action
     { disabled = model.disabled
@@ -82,4 +85,5 @@ renderButton model ( label, action ) =
     , kind = model.kind
     , size = model.size
     , text = label
+    , uid = model.uid ++ "-" ++ (toString index)
     }

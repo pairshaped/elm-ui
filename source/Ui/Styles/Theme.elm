@@ -68,6 +68,57 @@ disabled { colors, disabledCursor } =
     , Css.opacity (Css.float 0.6)
     ]
 
+ripple =
+  let
+    common =
+      [ Css.position Css.relative
+      , Css.property "z-index" "2"
+      ]
+  in
+    Css.mixin
+      [ Css.position Css.relative
+      , Css.overflow Css.hidden
+      , Css.focus
+        [ Css.children
+          [ Css.selector "svg"
+            [ Css.property "transition" "320ms cubic-bezier(0.215, 0.61, 0.355, 1)"
+            , Css.opacity (Css.float 0.3)
+            , Css.transforms
+              [ Css.translate2 (Css.pct -50) (Css.pct -50)
+              , Css.scale 1.5
+              ]
+            ]
+          ]
+        ]
+      , Css.active
+        [ Css.children
+          [ Css.selector "svg"
+            [ Css.opacity (Css.float 0.6) ]
+          ]
+        ]
+      , Css.before common
+      , Css.after common
+      , Css.children
+        [ Css.selector "*" common ]
+      , Css.children
+        [ Css.selector "svg"
+          [ Css.property "transition" "200ms opacity, 1ms 200ms transform"
+          , Css.transforms
+              [ Css.translate2 (Css.pct -50) (Css.pct -50)
+              , Css.scale 0
+              ]
+          , Css.property "pointer-events" "none"
+          , Css.position Css.absolute
+          , Css.property "content" "''"
+          , Css.width (Css.pct 100)
+          , Css.opacity Css.zero
+          , Css.property "z-index" "1"
+          , Css.left (Css.pct 50)
+          , Css.top (Css.pct 50)
+          ]
+        ]
+      ]
+
 focused { focusShadows } =
   Css.mixin
   [ transition "box-shadow 400ms linear"

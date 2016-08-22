@@ -192,6 +192,7 @@ render tags model =
       , kind = "primary"
       , size = "medium"
       , glyph = "plus"
+      , uid = model.uid ++ "-button"
       , side = "left"
       , text = ""
       }
