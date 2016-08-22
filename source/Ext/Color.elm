@@ -6,7 +6,7 @@ module Ext.Color exposing (..)
 @docs Hsv
 
 # Converting
-@docs hsvToRgb
+@docs hsvToRgb, rgbToHsl
 
 # Rendering
 @docs toCSSRgba
@@ -16,6 +16,9 @@ module Ext.Color exposing (..)
 
 # Decoding / Encoding
 @docs decodeHsv, encodeHsv
+
+# Utils
+@docs fmod
 -}
 
 import Ext.Number exposing (roundTo)
@@ -24,6 +27,8 @@ import Color exposing (Color)
 
 import Json.Decode as JD
 import Json.Encode as JE
+
+import Debug exposing (log)
 
 
 {-| Hsv color type.
@@ -168,3 +173,52 @@ toHsv color =
     , hue = hue / 360
     , value = cmax
     }
+
+
+{-|
+-}
+fmod : Float -> Int -> Float
+fmod f n =
+  let
+    integer = floor f
+  in
+    toFloat (integer % n) + f - toFloat integer
+
+
+{-|
+-}
+rgbToHsl : Int -> Int -> Int -> (Float, Float, Float)
+rgbToHsl red green blue =
+  let
+    r = toFloat red   / 255
+    g = toFloat green / 255
+    b = toFloat blue  / 255
+
+    cMax = max (max r g) b
+    cMin = min (min r g) b
+
+    c = cMax - cMin
+
+    hue =
+      degrees 60 *
+        if c == 0 then
+          0
+        else if cMax == r then
+          ((g - b) / c) `fmod` 6
+        else if cMax == g then
+          ((b - r) / c) + 2
+        else if cMax == b then
+          ((r - g) / c) + 4
+        else
+          0
+
+    lightness =
+      (cMax + cMin) / 2
+
+    saturation =
+      if c == 0 then
+        0
+      else
+        c / (1 - abs (2 * lightness - 1))
+  in
+    (hue, saturation, lightness)

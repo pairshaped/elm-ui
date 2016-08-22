@@ -56,6 +56,9 @@ import Ui.App
 import Ui
 import Kitchensink.Showcase as Showcase
 
+import Color.Convert
+import Ui.Styles.Functions
+
 
 type Msg {- Showcase models -}
   = InplaceInput (Showcase.Msg Ui.InplaceInput.Msg)
@@ -538,7 +541,15 @@ view model =
               "clipboard"
               "right"
           ]
-          [ node
+          [ node "div"
+            [ style
+              [("background-color", Color.Convert.colorToHex Color.white)
+              ,("color", Color.Convert.colorToHex (Ui.Styles.Functions.readable Color.white))]
+            ]
+            [ text "Hello"
+            , text (toString (Ui.Styles.Functions.readable Color.white))
+            ]
+          , node
               "kitchen-sink"
               []
               (infos

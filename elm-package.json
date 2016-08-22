@@ -61,6 +61,8 @@
     "Ui"
   ],
   "dependencies": {
+    "eskimoblood/elm-color-extra": "3.0.4 <= v < 4.0.0",
+    "mdgriffith/elm-color-mixing": "1.0.3 <= v < 2.0.0",
     "elm-community/list-extra": "3.1.0 <= v < 4.0.0",
     "elm-community/elm-test": "1.0.0 <= v < 2.0.0",
     "rluiten/elm-date-extra": "5.0.1 <= v < 6.0.0",
