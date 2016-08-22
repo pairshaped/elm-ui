@@ -36,6 +36,11 @@ import Html exposing (node, text)
 import Html.Lazy
 
 import Ui.Helpers.Ripple as Ripple
+
+import Css
+
+import Ui.Styles.Theme as Theme exposing (default)
+import Ui.Styles.Functions
 import Ui
 
 
@@ -53,6 +58,22 @@ type alias Model =
   , size : String
   , text : String
   }
+
+
+styles =
+  [ Css.borderRadius default.borderRadius
+  , Css.position Css.relative
+  , Theme.userSelect "none"
+  , Css.padding2 Css.zero (Css.em 1.25)
+  , Css.fontWeight (Css.int 600)
+  , Css.overflow Css.hidden
+  , Css.cursor Css.pointer
+  , Css.height (Css.px 36)
+  , Css.property "justify-content" "center"
+  , Css.property "display" "inline-flex"
+  , Css.alignItems Css.center
+  , Css.textAlign Css.center
+  ]
 
 
 {-| Initializes a button with the given data.

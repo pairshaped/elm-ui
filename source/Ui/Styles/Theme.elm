@@ -46,6 +46,13 @@ border { border, borderRadius } =
     , Css.borderRadius borderRadius
     ]
 
+userSelect value =
+  Css.mixin
+    [ Css.property "-webkit-user-select" value
+    , Css.property "-ms-user-select" value
+    , Css.property "-moz-user-select" value
+    ]
+
 base data =
   Css.mixin
     [ Css.fontFamilies [(Css.qt data.fontFamily)]
