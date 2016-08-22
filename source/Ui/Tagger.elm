@@ -35,6 +35,8 @@ import Ui
 
 import Ui.Styles.Theme as Theme exposing (default)
 import Ui.Styles.Html exposing (styledNode)
+import Color.Convert
+import Color
 import Css
 
 {-| Represents a tag:
@@ -150,6 +152,7 @@ styles =
           , Css.fontWeight (Css.int 600)
           , Css.padding2 Css.zero (Css.px 10)
           , Css.margin (Css.px 5)
+          , Theme.colors default (Color.Convert.hexToColor "#e3e3e3" |> Maybe.withDefault Color.black)
           , Css.children
             [ Css.selector "ui-icon"
               [ Css.verticalAlign Css.middle

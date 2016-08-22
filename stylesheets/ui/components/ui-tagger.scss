@@ -13,16 +13,6 @@ ui-tagger {
     }
   }
 
-  // Tags container
-  ui-tagger-tags {
-
-  }
-
-  // Tag
-  ui-tagger-tag {
-    @include colors(dampen($background, 7.5%));
-  }
-
   // Disabled state
   &.disabled ui-tagger-tag {
     @extend %disabled;

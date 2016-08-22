@@ -14,9 +14,9 @@ exec(cmd, function(error, stdout, stderr) {
     console.error(stderr)
   } else {
     var contents = fs.readFileSync('test.js', 'utf-8')
-    fs.writeFileSync('test.js', contents + script);
+    fs.writeFileSync('test.js', contents);
     exec(`node test.js`, function(error, stdout, stderr) {
-      console.log(stdout)
+      console.log(stdout, stderr)
       fs.unlink('test.js')
     })
   }
