@@ -234,7 +234,10 @@ render : Model -> Html.Html Msg
 render model =
   let
     children =
-      (List.map (renderItem model) (items model))
+      if model.open then
+        (List.map (renderItem model) (items model))
+      else
+        []
 
     dropdown =
       [ Dropdown.view
